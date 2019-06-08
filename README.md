@@ -12,7 +12,7 @@ In every steps, I try to write comment on how and why to do it.
 
 I hope this sample is useful to both me and anyone for reference.
 
-### Screenshot
+### Demo
 
 A text field (TextField), a label (Text) and an UIImageView (wrapped in UIVIewPresentable) to use binding (since SwiftUI's Image doesn't have binding)
 
@@ -25,7 +25,7 @@ A text field (TextField), a label (Text) and an UIImageView (wrapped in UIVIewPr
 + https://github.com/Juanpe/About-SwiftUI
 + https://github.com/vinhnx/notes/issues/270 (my own learning note about SwiftUI/Combine)
 
-##### Why SwiftUI/Combine?
+### Why SwiftUI/Combine?
 
 SwiftUI + Combine = 🤯 
 
