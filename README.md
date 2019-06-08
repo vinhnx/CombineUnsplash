@@ -1,6 +1,6 @@
 # CombineUnsplash
 
-A sample project exploring Unsplash API, powered by SwiftUI/Combine and Result.
+A sample project exploring SwiftUI/Combine and Result, using Unsplash API via Picsum.photos
 
 ### About
 
