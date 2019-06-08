@@ -1,6 +1,6 @@
 # CombineUnsplash
 
-A sample project exploring Unsplash API, powered by SwiftUI + Combine + Result.
+A sample project exploring Unsplash API, powered by SwiftUI/Combine and Result.
 
 ### About
 
@@ -29,6 +29,6 @@ A text field (TextField), a label (Text) and an UIImageView (wrapped in UIVIewPr
 
 SwiftUI + Combine = 🤯 
 
-### Thanks for checking out
+### Thanks for checking out!
 
 :rocket:
