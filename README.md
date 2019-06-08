@@ -2,21 +2,25 @@
 
 A sample project exploring SwiftUI/Combine and Result, using Unsplash API via Picsum.photos
 
-### About
-
-As SwiftUI is a new paradigm shift since the introduction of Swift, and it's relative new, we as [community](https://github.com/Juanpe/About-SwiftUI) are trying to learn and explore how to use it properly.
+As SwiftUI is a new paradigm shift since the introduction of Swift, and it's relative new not exactly easy to write (binding), we as [community](https://github.com/Juanpe/About-SwiftUI) are learning and exploring how to use it day by day.
 
 Here, I combine (no pun intended) SwiftUI and Combine for view and model binding by using [Picsum.photos](https://picsum.photos). I also use Result for network completion handler.
 
 In every steps, I try to write comment on how and why to do it. 
 
-I hope this sample is useful to both me and anyone for reference.
+I hope this sample is useful to both me and everyone for reference.
 
 ### Demo
 
 A text field (TextField), a label (Text) and an UIImageView (wrapped in UIVIewPresentable) to use binding (since SwiftUI's Image doesn't have binding)
 
 ![demo](./screenshot/demo.gif)
+
+### Why SwiftUI/Combine?
+
+SwiftUI + Combine = 🤯 
+
+(not convinced? take a look at [Apple's first ever interactive tutorials with quizzes](https://developer.apple.com/tutorials/swiftui) if you have not seen it)
 
 ### Resources SwiftUI/Combine
 
@@ -25,10 +29,6 @@ A text field (TextField), a label (Text) and an UIImageView (wrapped in UIVIewPr
 + https://github.com/topics/swiftui
 + https://github.com/Juanpe/About-SwiftUI
 + https://github.com/vinhnx/notes/issues/270 (my own learning note about SwiftUI/Combine)
-
-### Why SwiftUI/Combine?
-
-SwiftUI + Combine = 🤯 
 
 ### Thanks for checking out!
 
