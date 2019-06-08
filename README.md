@@ -20,8 +20,6 @@ A text field (TextField), a label (Text) and an UIImageView (wrapped in UIVIewPr
 
 SwiftUI + Combine = 🤯 
 
-(not convinced? take a look at [Apple's first ever interactive tutorials with quizzes](https://developer.apple.com/tutorials/swiftui) if you have not seen it)
-
 ### Resources SwiftUI/Combine
 
 + https://developer.apple.com/tutorials/swiftui
