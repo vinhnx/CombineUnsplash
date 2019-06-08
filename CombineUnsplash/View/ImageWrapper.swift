@@ -9,8 +9,12 @@
 import Foundation
 import SwiftUI
 
+/// SwiftUI's `Image` doesn't have `Binding`, so we wrap UIImageView with `UIViewRepresentable` instead
+/// to subscribe (or listen) to any data @Binding event
 struct ImageWrapper: UIViewRepresentable {
     @Binding var data: Data?
+
+    // MARK: - UIViewRepresentable
 
     func makeUIView(context: Context) -> UIImageView {
         UIImageView()

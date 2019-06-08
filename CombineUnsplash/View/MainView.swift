@@ -8,12 +8,18 @@
 
 import SwiftUI
 
+/// Main view
 struct MainView: View {
 
     // MARK: - Binding
 
-    @EnvironmentObject var viewModel: SplashViewModel
-    @State var category = ""
+    // A `Publisher` view model that taking care of fetching remote API on `TextField` enter key
+    // press event emits. It will publish data event for any `Subscriber` to populate data when the
+    // network response comes in
+    @EnvironmentObject internal var viewModel: SplashViewModel
+
+    // We just want `category` as view state for internal observers
+    @State internal var category = ""
 
     // MARK: - View
 
@@ -25,13 +31,15 @@ struct MainView: View {
                 }.font(.body)
 
                 VStack {
-                    Text(self.category.uppercased())
+                    Text($category.value.uppercased())
                         .font(.title)
                     Text("from Unsplash.com")
                         .font(.caption)
                 }
             }
 
+            // SwiftUI's `Image` doesn't have `Binding`, so we wrap UIImageView with `UIViewRepresentable`
+            // instead, to subscribe (or listen) to any data @Binding event
             ImageWrapper(data: $viewModel.data)
                 .frame(width: 350, height: 197)
                 .cornerRadius(10)
@@ -43,6 +51,6 @@ struct MainView: View {
     // MARK: - Private
 
     private func fetchData() {
-        self.viewModel.fetch(self.category)
+        self.viewModel.fetch($category.value)
     }
 }
