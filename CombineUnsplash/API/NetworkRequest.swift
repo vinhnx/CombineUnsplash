@@ -8,6 +8,7 @@
 
 import Foundation
 
+/// Basic URLSession data task request
 final class NetworkRequest {
 
     // MARK: - Aliasing
@@ -16,6 +17,7 @@ final class NetworkRequest {
 
     // MARK: - Data
 
+    /// Private dataTask instance to resume or cancel, given owner's life cycle
     private var dataTask: URLSessionTask?
 
     // MARK: - Life Cycle
@@ -26,6 +28,9 @@ final class NetworkRequest {
 
     // MARK: - Public
 
+    /// Fetch Unplash image
+    /// - Parameter category: any category
+    /// - Parameter completion: request result
     func fetch(category: String, completion: @escaping SplashRequestResult) {
         let session = URLSession(configuration: .default)
         guard let url = URLBuilder.buildRequestURL(category) else {
