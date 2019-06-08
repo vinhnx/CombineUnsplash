@@ -15,10 +15,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         let window = UIWindow(frame: UIScreen.main.bounds)
+
         let view = MainView()
         let viewModel = SplashViewModel()
+        // NOTE: .environementObject() is required to supply a `BindableObject` (SplashViewModel)
+        // to our `MainView`
         let rootView = view.environmentObject(viewModel)
         window.rootViewController = UIHostingController(rootView: rootView)
+        
         self.window = window
         window.makeKeyAndVisible()
     }
