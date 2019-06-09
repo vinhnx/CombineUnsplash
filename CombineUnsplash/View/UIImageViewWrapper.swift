@@ -1,5 +1,5 @@
 //
-//  ImageWrapper.swift
+//  UIImageViewWrapper.swift
 //  CombineUnsplash
 //
 //  Created by Vinh Nguyen on 8/6/19.
@@ -9,9 +9,15 @@
 import Foundation
 import SwiftUI
 
-/// SwiftUI's `Image` doesn't have `Binding`, so we wrap UIImageView with `UIViewRepresentable` instead
+/// (Earlier I was not yet knew how to bind @Binding with SwiftUI's `Image`, turns out we just need
+/// to create an instance of `View` and return `Image` inside its body -- see ImageView.swift)
+///
+/// -- So this part is now obsolete, as we should use SwiftUI as much for possible for low UIKit
+/// overhead, I keep these an example for how to use UIKit component in SwiftUI binding system
+/// wrap UIImageView with `UIViewRepresentable` instead
 /// to subscribe (or listen) to any data @Binding event
-struct ImageWrapper: UIViewRepresentable {
+/// --
+struct UIImageViewWrapper: UIViewRepresentable {
     @Binding var data: Data?
 
     // MARK: - UIViewRepresentable

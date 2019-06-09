@@ -43,9 +43,7 @@ struct MainView: View {
                 }
             }
 
-            // SwiftUI's `Image` doesn't have `Binding`, so we wrap UIImageView with `UIViewRepresentable`
-            // instead, to subscribe (or listen) to any data @Binding event
-            ImageWrapper(data: $viewModel.data)
+            ImageView(data: $viewModel.data)
                 .frame(width: 350, height: 197)
                 .cornerRadius(10)
 

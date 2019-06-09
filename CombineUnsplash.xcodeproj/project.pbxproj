@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A31D060422ABD56F00D3CB7A /* ImageWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A31D060322ABD56F00D3CB7A /* ImageWrapper.swift */; };
+		A31D060422ABD56F00D3CB7A /* UIImageViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A31D060322ABD56F00D3CB7A /* UIImageViewWrapper.swift */; };
+		A3488D8322ACA4D700D053D5 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3488D8222ACA4D700D053D5 /* ImageView.swift */; };
 		A367153022AB889B00EEECA1 /* SplashError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A367152F22AB889B00EEECA1 /* SplashError.swift */; };
 		A367153222AB88AD00EEECA1 /* SplashViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A367153122AB88AD00EEECA1 /* SplashViewModel.swift */; };
 		A3FB0B5122AB720000C3D0B1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3FB0B5022AB720000C3D0B1 /* AppDelegate.swift */; };
@@ -40,7 +41,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		A31D060322ABD56F00D3CB7A /* ImageWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageWrapper.swift; sourceTree = "<group>"; };
+		A31D060322ABD56F00D3CB7A /* UIImageViewWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageViewWrapper.swift; sourceTree = "<group>"; };
+		A3488D8222ACA4D700D053D5 /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		A367152F22AB889B00EEECA1 /* SplashError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashError.swift; sourceTree = "<group>"; };
 		A367153122AB88AD00EEECA1 /* SplashViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewModel.swift; sourceTree = "<group>"; };
 		A3FB0B4D22AB720000C3D0B1 /* CombineUnsplash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CombineUnsplash.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -170,7 +172,8 @@
 			isa = PBXGroup;
 			children = (
 				A3FB0B8222AB724900C3D0B1 /* MainView.swift */,
-				A31D060322ABD56F00D3CB7A /* ImageWrapper.swift */,
+				A31D060322ABD56F00D3CB7A /* UIImageViewWrapper.swift */,
+				A3488D8222ACA4D700D053D5 /* ImageView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -323,11 +326,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				A3FB0B8922AB73C200C3D0B1 /* URLBuilder.swift in Sources */,
-				A31D060422ABD56F00D3CB7A /* ImageWrapper.swift in Sources */,
+				A31D060422ABD56F00D3CB7A /* UIImageViewWrapper.swift in Sources */,
 				A3FB0B8322AB724900C3D0B1 /* MainView.swift in Sources */,
 				A3FB0B5122AB720000C3D0B1 /* AppDelegate.swift in Sources */,
 				A367153222AB88AD00EEECA1 /* SplashViewModel.swift in Sources */,
 				A3FB0B8522AB729500C3D0B1 /* NetworkRequest.swift in Sources */,
+				A3488D8322ACA4D700D053D5 /* ImageView.swift in Sources */,
 				A367153022AB889B00EEECA1 /* SplashError.swift in Sources */,
 				A3FB0B5322AB720000C3D0B1 /* SceneDelegate.swift in Sources */,
 			);
