@@ -18,6 +18,8 @@ I hope this sample is useful to both me and everyone for reference.
 
 SwiftUI + Combine = 🤯 
 
+translate: unidirection data flow is now possible in Swift, without having to use Rx or 3rd party libaries.
+
 ### Resources SwiftUI/Combine
 
 + https://developer.apple.com/tutorials/swiftui
