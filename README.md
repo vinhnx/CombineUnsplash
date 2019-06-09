@@ -12,8 +12,6 @@ I hope this sample is useful to both me and everyone for reference.
 
 ### Demo
 
-A text field (TextField), a label (Text) and an UIImageView (wrapped in UIVIewPresentable) to use binding (since SwiftUI's Image doesn't have binding)
-
 ![demo](./screenshot/demo.gif)
 
 ### Why SwiftUI/Combine?
