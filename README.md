@@ -1,10 +1,10 @@
 # CombineUnsplash
 
-A sample project exploring SwiftUI/Combine and Result, using Unsplash API via Picsum.photos
+A sample project exploring [SwiftUI](https://developer.apple.com/xcode/swiftui/)/[Combine](https://developer.apple.com/documentation/combine) and [Result](https://developer.apple.com/documentation/swift/result), using [Unsplash](https://unsplash.com) API (via [Picsum.photos](https://picsum.photos) API)
 
-As SwiftUI is a new paradigm shift since the introduction of Swift, and it's relative new, so we as [community](https://github.com/Juanpe/About-SwiftUI) are learning and exploring how to use it day by day.
+As [SwiftUI](https://developer.apple.com/xcode/swiftui/) is a new paradigm shift since the introduction of Swift, and it's relative new, so we as [community](https://github.com/Juanpe/About-SwiftUI) are learning and exploring how to use it day by day.
 
-Here, I combine (no pun intended) SwiftUI and Combine for view and model binding by using [Picsum.photos](https://picsum.photos). I also use Result for network completion handler.
+Here, I combine (no pun intended) SwiftUI and Combine for view and model binding by using Picsum.photos API, using Swift's Result for network completion handler.
 
 In every steps, I try to write comment on how and why to do it. 
 
