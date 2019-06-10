@@ -13,14 +13,13 @@ struct MainView: View {
 
     // MARK: - Binding
 
-    // A `Publisher` view model that taking care of fetching remote API on `TextField` enter key
-    // press event emits. It will publish data event for any `Subscriber` to populate data when the
-    // network response comes in
+    // A `Publisher` view model that taking care of fetching remote API on `TextField` enter key press event.
+    // It will publish data event for any `Subscriber` to populate data when the network response comes in
     @EnvironmentObject private var viewModel: SplashViewModel
 
-    // @State `category`, because we will use it for both read (#1) and write (#2).
-    // IMPORTANT: @State properites should be declared as `private`
-    // to prevent other views mutate it.
+    // Define `category` as @State means we can have synthesized storage (getter and sett)
+    // because we will use it for both read (#1) and write (#2).
+    // IMPORTANT: @State properites should be declared as `private` to prevent other views mutate it.
     @State private var category = ""
 
     // MARK: - View
@@ -55,7 +54,10 @@ struct MainView: View {
 
     private func fetchData() {
         // like #1 above
-        // you can just use `category` to read the underlying value of $category
+        // note: you can just use `self.category` to read the underlying value of $category
+        // so we have two ways to read the value of $category's underlying value
+        // 1. self.category (getter)
+        // 2. $category.value (the value of $category binding)
         self.viewModel.fetch($category.value)
     }
 }
