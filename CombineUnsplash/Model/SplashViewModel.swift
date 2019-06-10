@@ -28,7 +28,7 @@ final class SplashViewModel: BindableObject {
     /// Public model that we want to send to `Subscriber`s
     var data: Data? {
         didSet {
-            guard self.data?.isEmpty == false else { return }
+            guard oldValue != self.data else { return }
             DispatchQueue.main.async {
                 self.didChange.send(self)
             }
