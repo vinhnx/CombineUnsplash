@@ -17,7 +17,7 @@ final class SplashViewModel: BindableObject {
 
     // MARK: - Properties
 
-    /// A lazy initialize NetworkRequest instance
+    /// A lazy initialized NetworkRequest instance
     private lazy var networkRequest = NetworkRequest()
 
     // MARK: - Binding
