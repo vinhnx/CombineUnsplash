@@ -17,7 +17,7 @@ struct MainView: View {
     // It will publish data event for any `Subscriber` to populate data when the network response comes in
     @EnvironmentObject private var viewModel: SplashViewModel
 
-    // Define `category` as @State means we can have synthesized storage (getter and sett)
+    // Define `category` as @State (a Binding) means we can have synthesized storage (getter and setter)
     // because we will use it for both read (#1) and write (#2).
     // IMPORTANT: @State properites should be declared as `private` to prevent other views mutate it.
     @State private var category = ""
