@@ -16,6 +16,13 @@ Possiblity is to better use of functional reactive stream from TextField event:
 
 as in https://mobile.twitter.com/alexito4/status/1137386633886687232
 
+A full-fledged Combine example look somthing like: 
+
++ https://github.com/marty-suzuki/GitHubSearchWithSwiftUI
++ https://github.com/sergdort/CombineFeedback
+
+It's much more complex than my sample, but here I just want to point out the "basic" way to do Combine. If you're interested in a completed MVVM examples, definitely check those out. 
+
 ### Demo
 
 ![demo](./screenshot/demo.gif)
