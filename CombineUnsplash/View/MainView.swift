@@ -28,9 +28,9 @@ struct MainView: View {
         VStack(alignment: .center, spacing: 30) {
             HStack {
                 // #2 write (mutates) the underlying value of `category`
-                TextField($category, placeholder: Text("eg: nature")) {
-                    self.fetchData()
-                }.font(.body)
+                TextField($category,
+                          placeholder: Text("eg: nature, then press enter..."),
+                          onCommit: fetchData)
 
                 VStack {
                     // #1 read the value of `category`
@@ -42,12 +42,13 @@ struct MainView: View {
                 }
             }
 
+            // ImageView observers viewModel's data
             ImageView(data: $viewModel.data)
-                .frame(width: 350, height: 197)
                 .cornerRadius(10)
 
             Spacer()
-        }.padding()
+        }
+        .padding()
     }
 
     // MARK: - Private
@@ -58,6 +59,6 @@ struct MainView: View {
         // so we have two ways to read the value of $category's underlying value
         // 1. self.category (getter)
         // 2. $category.value (the value of $category binding)
-        self.viewModel.fetch($category.value)
+        viewModel.fetch($category.value)
     }
 }
