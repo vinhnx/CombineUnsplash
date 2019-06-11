@@ -10,6 +10,12 @@ In every steps, I try to write comment on how and why to do it.
 
 I hope this sample is useful to both me and everyone for reference.
 
+(note: I'm still learning about SwiftUI and Combine, so I will try to update this sample when I learn new things about it from WWDC sessions) :smile:
+
+Possiblity is to better use of functional reactive stream from TextField event:
+
+as in https://mobile.twitter.com/alexito4/status/1137386633886687232
+
 ### Demo
 
 ![demo](./screenshot/demo.gif)
