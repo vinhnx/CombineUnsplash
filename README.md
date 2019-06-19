@@ -12,11 +12,7 @@ I hope this sample is useful to both me and everyone for reference.
 
 (note: I'm still learning about SwiftUI and Combine, so I will try to update this sample when I learn new things about it from WWDC sessions) :smile:
 
-Possiblity is to better use of functional reactive stream from TextField event:
-
-as in https://mobile.twitter.com/alexito4/status/1137386633886687232
-
-A full-fledged Combine example look somthing like: 
+A full-fledged Combine example look something like: 
 
 + https://github.com/marty-suzuki/GitHubSearchWithSwiftUI
 + https://github.com/sergdort/CombineFeedback
@@ -31,7 +27,7 @@ It's much more complex than my sample, but here I just want to point out the "ba
 
 SwiftUI + Combine = 🤯 
 
-> Translate: unidirectional data flow is now possible in Swift, without having to use Rx or 3rd party libaries. :rocket:
+> Translate: unidirectional data flow is now possible in Swift, without having to use Rx or 3rd party libraries. :rocket:
 
 ### Resources SwiftUI/Combine
 
