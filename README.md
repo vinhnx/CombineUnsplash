@@ -19,16 +19,6 @@ A full-fledged Combine example look something like:
 
 It's much more complex than my sample, but here I just want to point out the "basic" way to do Combine. If you're interested in a completed Combine examples, definitely check those out. 
 
-### Demo
-
-![demo](./screenshot/demo.gif)
-
-### Why SwiftUI/Combine?
-
-SwiftUI + Combine = 🤯 
-
-> Translate: unidirectional data flow is now possible in Swift, without having to use Rx or 3rd party libraries. :rocket:
-
 ### Resources SwiftUI/Combine
 
 + https://developer.apple.com/tutorials/swiftui
