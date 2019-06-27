@@ -14,6 +14,7 @@ I hope this sample is useful to both me and everyone for reference.
 
 A full-fledged Combine example look something like: 
 
++ https://github.com/kitasuke/SwiftUI-MVVM
 + https://github.com/marty-suzuki/GitHubSearchWithSwiftUI
 + https://github.com/sergdort/CombineFeedback
 
