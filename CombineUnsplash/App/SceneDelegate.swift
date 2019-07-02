@@ -18,6 +18,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let view = MainView()
         let viewModel = SplashViewModel()
+
+        // NOTE: https://github.com/vinhnx/notes/issues/270
+        // + use @EnvironmentObject if you want to pass data to another view hierarchy directly
+        // + use @ObjectBinding to pass data from superview to nearest child view
+
         // NOTE: .environementObject() is required to supply a `BindableObject` (SplashViewModel)
         // to our `MainView`
         let rootView = view.environmentObject(viewModel)
