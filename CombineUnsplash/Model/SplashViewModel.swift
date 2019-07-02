@@ -67,7 +67,6 @@ final class SplashViewModel: BindableObject {
         // map errorStream into AnyCancellable
         let errorStream = responsePublisher
             .catch { [weak self] error -> Publishers.Empty<[Splash], SplashError> in // catch `self.networkRequest.fetchListSignal()` event error
-                self?.isLoading = false
                 self?.errorMessage = error.message
                 return Publishers.Empty()
             }
@@ -77,10 +76,12 @@ final class SplashViewModel: BindableObject {
 
         // attach `responseSubject` with closure handler, here we process `models` setter
         _ = self.responseSubject
-            .sink { [weak self] in
-                self?.isLoading = false
-                self?.models = $0
-            }
+            .sink { [weak self] models in self?.models = models }
+
+        // combine both `responseSubject` and `errorSubject` stream to check for loading state
+        _ = Publishers.CombineLatest(responseSubject, errorSubject) { response, error in (response, error) }
+            .map { tuple in tuple.0.isEmpty || tuple.1.isEmpty }
+            .sink { result in self.isLoading = result }
 
         // collect AnyCancellable subjects to discard later when `SplashViewModel` life cycle ended
         self.cancellables += [
