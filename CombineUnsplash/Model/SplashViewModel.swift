@@ -13,7 +13,6 @@ import SwiftUI
 final class SplashViewModel: BindableObject {
     typealias ViewModelSubject = PassthroughSubject<SplashViewModel, Never>
     typealias ResponseSubject = PassthroughSubject<[Splash], SplashError>
-    typealias FinalSubject = PassthroughSubject<[Splash], Never>
 
     // MARK: - Properties
 
@@ -22,7 +21,6 @@ final class SplashViewModel: BindableObject {
     // MARK: - Binding
 
     internal let didChange = ViewModelSubject()
-    private let finalSubject = FinalSubject()
     private let responseSubject = ResponseSubject()
     private let errorSubject = ResponseSubject()
     private var cancellables = [AnyCancellable]()
