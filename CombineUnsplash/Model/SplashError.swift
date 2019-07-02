@@ -10,19 +10,20 @@ import Foundation
 import SwiftUI
 
 enum SplashError: Error {
-    case invalidURL(String)
+    case invalidRequestURL
     case invalidResponse
     case invalidData
     case unableToRetriveImageLocation
     case unableToMapRequestURL
     case mappedFromRawError(Error)
+    case jsonDecoderError(Error)
 }
 
 extension SplashError {
     var message: String {
         switch self {
-        case .invalidURL(let urlString):
-            return "Invalid URL: \(urlString)"
+        case .invalidRequestURL:
+            return "Invalid request URL"
         case .invalidData:
             return "Invalid data"
         case .unableToMapRequestURL:
@@ -31,7 +32,8 @@ extension SplashError {
             return "Invalid response"
         case .unableToRetriveImageLocation:
             return "Unable to retrive image location"
-        case .mappedFromRawError(let error):
+        case .mappedFromRawError(let error),
+             .jsonDecoderError(let error):
             return error.localizedDescription
         }
     }
