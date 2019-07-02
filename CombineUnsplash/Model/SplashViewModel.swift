@@ -10,43 +10,86 @@ import Combine
 import Foundation
 import SwiftUI
 
-/// A `Publisher` view model that taking care of fetching remote API on `TextField` enter key
-/// press event emits. It will publish data event for any `Subscriber` to populate data when the
-/// network response comes in
 final class SplashViewModel: BindableObject {
+    typealias ViewModelSubject = PassthroughSubject<SplashViewModel, Never>
+    typealias ResponseSubject = PassthroughSubject<[Splash], SplashError>
+    typealias FinalSubject = PassthroughSubject<[Splash], Never>
 
     // MARK: - Properties
 
-    /// A lazy initialized NetworkRequest instance
     private lazy var networkRequest = NetworkRequest()
 
     // MARK: - Binding
 
-    /// A subject that passes along values and completion.
-    internal let didChange = PassthroughSubject<SplashViewModel, Never>()
+    internal let didChange = ViewModelSubject()
+    private let finalSubject = FinalSubject()
+    private let responseSubject = ResponseSubject()
+    private let errorSubject = ResponseSubject()
+    private var cancellables = [AnyCancellable]()
 
-    /// Public model that we want to send to `Subscriber`s
+    var state: State = .loading
+    enum State {
+        case loading
+        case completed(response: [Splash])
+        case failed(error: String)
+    }
+
+    var isLoading = true {
+        didSet {
+            self.didChange.send(self)
+        }
+    }
+
+    var errorMessage = "" {
+        didSet {
+            self.state = .failed(error: self.errorMessage)
+            self.didChange.send(self)
+        }
+    }
+
+    var models: [Splash] = [] {
+        didSet {
+            guard self.models != oldValue else { return }
+            self.state = .completed(response: self.models)
+            self.didChange.send(self)
+        }
+    }
+
     var data: Data? {
         didSet {
             guard oldValue != self.data else { return }
-            DispatchQueue.main.async {
-                self.didChange.send(self)
-            }
+            self.didChange.send(self)
         }
     }
 
     // MARK: - Public
 
-    /// Fetch an image from Unsplash with a category
-    /// - Parameter category: any category
-    func fetch(_ category: String) {
-        self.networkRequest.fetch(category: category) { [weak self] result in
-            switch result {
-            case .success(let response):
-                self?.data = response
-            case .failure(let error):
-                print(error.localizedDescription)
+    func fetchList() {
+        let responsePublisher = self.networkRequest.fetchListSignal()
+        let responseStream = responsePublisher
+            .share()
+            .receive(on: DispatchQueue.main)
+            .subscribe(self.responseSubject)
+
+        let errorStream = responsePublisher
+            .catch { [weak self] error -> Publishers.Empty<[Splash], SplashError> in
+                self?.isLoading = false
+                self?.errorMessage = error.message
+                return Publishers.Empty()
             }
-        }
+            .share()
+            .receive(on: DispatchQueue.main)
+            .subscribe(self.errorSubject)
+
+        _ = self.responseSubject
+            .sink { [weak self] in
+                self?.isLoading = false
+                self?.models = $0
+            }
+
+        self.cancellables += [
+            responseStream,
+            errorStream
+        ]
     }
 }

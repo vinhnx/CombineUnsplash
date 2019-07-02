@@ -6,21 +6,14 @@
 //  Copyright © 2019 Vinh Nguyen. All rights reserved.
 //
 
+import Combine
 import Foundation
 
-/// Basic URLSession data task request
 final class NetworkRequest {
 
-    // MARK: - Aliasing
-
-    typealias SplashRequestResult = (Result<Data, SplashError>) -> Void
-
-    // MARK: - Data
-
-    /// Private dataTask instance to resume or cancel, given owner's life cycle
+    typealias SplashPubliser = AnyPublisher<[Splash], SplashError>
     private var dataTask: URLSessionTask?
-
-    // MARK: - Life Cycle
+    private let backgroundQueue = DispatchQueue(label: "NetworkRequest.queue", qos: .background)
 
     deinit {
         self.dataTask?.cancel()
@@ -28,42 +21,25 @@ final class NetworkRequest {
 
     // MARK: - Public
 
-    /// Fetch Unplash image
-    /// - Parameter category: any category
-    /// - Parameter completion: request result
-    func fetch(category: String, completion: @escaping SplashRequestResult) {
-        let session = URLSession(configuration: .default)
-        guard let url = URLBuilder.buildRequestURL(category) else {
-            DispatchQueue.main.async {
-                completion(.failure(.unableToMapRequestURL))
-            }
-
-            return
+    func fetchListSignal() -> SplashPubliser {
+        guard let url = URLBuilder.buildListRequestURL() else {
+            return Publishers.Empty().eraseToAnyPublisher()
         }
 
-        let request = URLRequest(url: url)
-        self.dataTask = session.dataTask(with: request) { data, _, error in
-            if let error = error {
-                DispatchQueue.main.async {
-                    completion(.failure(.mappedFromRawError(error)))
-                }
+        var request = URLRequest(url: url)
+        request.addValue(
+            "application/json",
+            forHTTPHeaderField: "Content-Type"
+        )
 
-                return
-            }
-
-            guard let data = data else {
-                DispatchQueue.main.async {
-                    completion(.failure(.invalidData))
-                }
-
-                return
-            }
-
-            DispatchQueue.main.async {
-                completion(.success(data))
-            }
-        }
-
-        self.dataTask?.resume()
+        return URLSession.shared
+            .dataTaskPublisher(for: request)
+            .map { $0.data }
+            .mapError(SplashError.mappedFromRawError)
+            .decode(type: [Splash].self, decoder: JSONDecoder())
+            .mapError(SplashError.jsonDecoderError)
+            .subscribe(on: self.backgroundQueue) // process on background/private queue
+            .receive(on: DispatchQueue.main) // send result on main queue
+            .eraseToAnyPublisher() // IMPORTANT
     }
 }

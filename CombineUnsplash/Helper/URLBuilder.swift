@@ -10,10 +10,17 @@ import Foundation
 import UIKit
 
 struct URLBuilder {
-    static func buildRequestURL(_ category: String) -> URL? {
-        // https://source.unsplash.com/{width}x{height}/?{urlString}
-        var components = URLComponents(string: "https://source.unsplash.com/500x500/")
-        components?.query = category
-        return components?.url
+    static func build(_ urlString: String) -> URL {
+        let https = "https://"
+        if urlString.hasPrefix(https) {
+            return URL(string: urlString)!
+        }
+
+        return URL(string: (https + urlString))!
+    }
+
+    static func buildListRequestURL() -> URL? {
+        let comp = URLComponents(string: "https://picsum.photos/v2/list")
+        return comp?.host == nil ? nil : comp?.url
     }
 }
