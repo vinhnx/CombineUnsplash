@@ -53,38 +53,36 @@ final class SplashViewModel: BindableObject {
         }
     }
 
-    var data: Data? {
-        didSet {
-            guard oldValue != self.data else { return }
-            self.didChange.send(self)
-        }
-    }
-
     // MARK: - Public
 
     func fetchList() {
         let responsePublisher = self.networkRequest.fetchListSignal()
-        let responseStream = responsePublisher
-            .share()
-            .receive(on: DispatchQueue.main)
-            .subscribe(self.responseSubject)
 
+        // map responseStream into AnyCancellable
+        let responseStream = responsePublisher
+            .share() // return as class instance
+            .receive(on: DispatchQueue.main) // specify that we want to receive publisher on main thread scheduler (for UI ops)
+            .subscribe(self.responseSubject) // attach to an subject
+
+        // map errorStream into AnyCancellable
         let errorStream = responsePublisher
-            .catch { [weak self] error -> Publishers.Empty<[Splash], SplashError> in
+            .catch { [weak self] error -> Publishers.Empty<[Splash], SplashError> in // catch `self.networkRequest.fetchListSignal()` event error
                 self?.isLoading = false
                 self?.errorMessage = error.message
                 return Publishers.Empty()
             }
-            .share()
-            .receive(on: DispatchQueue.main)
-            .subscribe(self.errorSubject)
+            .share() // return as class instance
+            .receive(on: DispatchQueue.main) // specify that we want to receive publisher on main thread scheduler (for UI ops)
+            .subscribe(self.errorSubject) // attach to `errorSubject`
 
+        // attach `responseSubject` with closure handler, here we process `models` setter
         _ = self.responseSubject
             .sink { [weak self] in
                 self?.isLoading = false
                 self?.models = $0
             }
 
+        // collect AnyCancellable subjects to discard later when `SplashViewModel` life cycle ended
         self.cancellables += [
             responseStream,
             errorStream

@@ -33,13 +33,13 @@ final class NetworkRequest {
         )
 
         return URLSession.shared
-            .dataTaskPublisher(for: request)
-            .map { $0.data }
-            .mapError(SplashError.mappedFromRawError)
-            .decode(type: [Splash].self, decoder: JSONDecoder())
-            .mapError(SplashError.jsonDecoderError)
+            .dataTaskPublisher(for: request) // 1. Foundation's URLSession now has dataTask `Publisher`
+            .map { $0.data } // 2. we retrieve `data` from the Publisher's `Output` tuple
+            .mapError(SplashError.mappedFromRawError) // 3. catch and map error that the dataTask `Publisher` emits
+            .decode(type: [Splash].self, decoder: JSONDecoder()) // 4. Decode #3 data into array of `Splash` model
+            .mapError(SplashError.jsonDecoderError) // 5. catch and map error from JSONDecoder
             .subscribe(on: self.backgroundQueue) // process on background/private queue
             .receive(on: DispatchQueue.main) // send result on main queue
-            .eraseToAnyPublisher() // IMPORTANT
+            .eraseToAnyPublisher() // IMPORTANT: use AnyPublisher to hide implementation details to outside, hence "type-erased"
     }
 }

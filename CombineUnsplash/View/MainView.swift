@@ -16,12 +16,15 @@ struct MainView: View {
     var body: some View {
         NavigationView {
             VStack {
+                // loading indicator label
                 Text(viewModel.isLoading ? "Loading..." : "")
 
+                // error message label
                 Text(viewModel.errorMessage)
                     .lineLimit(nil)
                     .multilineTextAlignment(.center)
 
+                // make List if viewModel's error is empty
                 if viewModel.errorMessage.isEmpty {
                     List(viewModel.models) { model in
                         NavigationButton(
