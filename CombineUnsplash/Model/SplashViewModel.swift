@@ -53,6 +53,10 @@ final class SplashViewModel: BindableObject {
         }
     }
 
+    deinit {
+        _ = self.cancellables.map { $0.cancel() }
+    }
+
     // MARK: - Public
 
     func fetchList() {
@@ -70,6 +74,7 @@ final class SplashViewModel: BindableObject {
                 self?.errorMessage = error.message
                 return Publishers.Empty()
             }
+            .retry(1) // retries 1 time
             .share() // return as class instance
             .receive(on: DispatchQueue.main) // specify that we want to receive publisher on main thread scheduler (for UI ops)
             .subscribe(self.errorSubject) // attach to `errorSubject`
@@ -78,7 +83,7 @@ final class SplashViewModel: BindableObject {
         _ = self.responseSubject
             .sink { [weak self] models in self?.models = models }
 
-        // combine both `responseSubject` and `errorSubject` stream to check for loading state
+        // combine both responseSubject and `errorSubject` stream
         _ = Publishers.CombineLatest(responseSubject, errorSubject) { response, error in (response, error) }
             .map { tuple in tuple.0.isEmpty || tuple.1.isEmpty }
             .sink { result in self.isLoading = result }
