@@ -64,9 +64,9 @@ final class SplashViewModel: BindableObject {
 
         // map responseStream into AnyCancellable
         let responseStream = responsePublisher
-            .share() // return as class instance
+            .share() // return as class instance (this is later to cancel on AnyCancellable)
             .receive(on: DispatchQueue.main) // specify that we want to receive publisher on main thread scheduler (for UI ops)
-            .subscribe(self.responseSubject) // attach to an subject
+            .subscribe(self.responseSubject) // attach to an `responseSubject` subscriber
 
         // map errorStream into AnyCancellable
         let errorStream = responsePublisher
@@ -74,16 +74,16 @@ final class SplashViewModel: BindableObject {
                 self?.errorMessage = error.message
                 return Publishers.Empty()
             }
-            .retry(1) // retries 1 time
-            .share() // return as class instance
+            .retry(1) // retry 1 time if network is failed (typically we don't want to do this, but here's to illustrate Publisher's `retry`)
+            .share() // return this publisher as class instance (this is later to cancel on AnyCancellable)
             .receive(on: DispatchQueue.main) // specify that we want to receive publisher on main thread scheduler (for UI ops)
-            .subscribe(self.errorSubject) // attach to `errorSubject`
+            .subscribe(self.errorSubject) // attach to `errorSubject` subscriber
 
         // attach `responseSubject` with closure handler, here we process `models` setter
         _ = self.responseSubject
             .sink { [weak self] models in self?.models = models }
 
-        // combine both responseSubject and `errorSubject` stream
+        // combine both `responseSubject` and `errorSubject` stream
         _ = Publishers.CombineLatest(responseSubject, errorSubject) { response, error in (response, error) }
             .map { tuple in tuple.0.isEmpty || tuple.1.isEmpty }
             .sink { result in self.isLoading = result }
