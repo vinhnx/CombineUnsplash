@@ -2,6 +2,8 @@
 
 A sample project exploring MVVM pattern with [SwiftUI](https://developer.apple.com/xcode/swiftui/)/[Combine](https://developer.apple.com/documentation/combine), using [Unsplash](https://unsplash.com) API (via [Picsum.photos](https://picsum.photos) API)
 
+Note: required Xcode 11.0 beta 2 to build
+
 ### Resources SwiftUI/Combine
 
 + https://developer.apple.com/tutorials/swiftui
