@@ -10,10 +10,11 @@ import Combine
 import Foundation
 
 final class NetworkRequest {
-
-    typealias SplashPubliser = AnyPublisher<[Splash], SplashError>
     private var dataTask: URLSessionTask?
-    private let backgroundQueue = DispatchQueue(label: "NetworkRequest.queue", qos: .background)
+    private let backgroundQueue = DispatchQueue(
+        label: "NetworkRequest.queue",
+        qos: .background
+    )
 
     deinit {
         self.dataTask?.cancel()
@@ -21,9 +22,11 @@ final class NetworkRequest {
 
     // MARK: - Public
 
-    func fetchListSignal() -> SplashPubliser {
+    func fetchListSignal() -> AnyPublisher<[Splash], SplashError> {
         guard let url = URLBuilder.buildListRequestURL() else {
-            return Publishers.Empty().eraseToAnyPublisher()
+            return Fail(
+                error: SplashError.invalidRequestURL
+            ).eraseToAnyPublisher()
         }
 
         var request = URLRequest(url: url)

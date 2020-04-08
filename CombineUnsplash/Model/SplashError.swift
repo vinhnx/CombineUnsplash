@@ -13,6 +13,7 @@ enum SplashError: Error {
     case invalidRequestURL
     case invalidResponse
     case invalidData
+    case invalidMetadata
     case unableToRetriveImageLocation
     case unableToMapRequestURL
     case mappedFromRawError(Error)
@@ -22,6 +23,8 @@ enum SplashError: Error {
 extension SplashError {
     var message: String {
         switch self {
+        case .invalidMetadata:
+            return "Invalid metadata"
         case .invalidRequestURL:
             return "Invalid request URL"
         case .invalidData:

@@ -8,22 +8,34 @@
 
 import Foundation
 import SwiftUI
+import LinkPresentation
 
 struct DetailView: View {
-    @EnvironmentObject var preview: LinkPreviewData
-
+    @ObservedObject var preview: LinkPreviewData
+    @State var response: LPLinkMetadata?
     var model: Splash
 
     var body: some View {
-        NavigationView {
-            VStack {
-                LinkView(data: $preview.metadata)
-            }.padding()
-        }
-        .navigationBarTitle(Text(model.author),
-                            displayMode: .inline)
-        .onAppear {
-            self.preview.fetch(self.model.url)
+        NavigationView { makeView() }
+            .navigationBarTitle(Text(model.author), displayMode: .inline)
+            .onAppear {
+                self.preview.fetch(self.model.url)
+            }
+            .onReceive(preview.didChange) { (response) in
+                self.response = response
+            }
+    }
+
+    private func makeView() -> some View {
+        // NOTE: AnyView: "erase" LinkView -> AnyView, because SwiftUI View is opaque
+        if let response = self.response {
+            return AnyView(
+                LinkView(data: response).padding()
+            )
+        } else {
+            return AnyView(
+                Text("loading...")
+            )
         }
     }
 }

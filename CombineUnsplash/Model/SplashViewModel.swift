@@ -10,88 +10,71 @@ import Combine
 import Foundation
 import SwiftUI
 
-final class SplashViewModel: BindableObject {
-    typealias ViewModelSubject = PassthroughSubject<SplashViewModel, Never>
-    typealias ResponseSubject = PassthroughSubject<[Splash], SplashError>
-
+final class SplashViewModel: ObservableObject {
+    
     // MARK: - Properties
-
-    private lazy var networkRequest = NetworkRequest()
-
+    
+    private var networkRequest = NetworkRequest()
+    
     // MARK: - Binding
-
-    internal let didChange = ViewModelSubject()
-    private let responseSubject = ResponseSubject()
-    private let errorSubject = ResponseSubject()
+    
+    internal let objectWillChange = ObservableObjectPublisher()
     private var cancellables = [AnyCancellable]()
-
+    
     var state: State = .loading
     enum State {
         case loading
         case completed(response: [Splash])
         case failed(error: String)
     }
-
+    
     var isLoading = true {
         didSet {
-            self.didChange.send(self)
+            self.objectWillChange.send()
         }
     }
-
+    
     var errorMessage = "" {
         didSet {
             self.state = .failed(error: self.errorMessage)
-            self.didChange.send(self)
+            self.objectWillChange.send()
         }
     }
-
+    
     var models: [Splash] = [] {
         didSet {
             guard self.models != oldValue else { return }
             self.state = .completed(response: self.models)
-            self.didChange.send(self)
+            self.objectWillChange.send()
         }
     }
-
+    
     deinit {
-        _ = self.cancellables.map { $0.cancel() }
+        self.cancellables.forEach { $0.cancel() } // cancel any ongoing signal chain (if any) on deinit
     }
-
+    
     // MARK: - Public
-
+    
     func fetchList() {
-        let responsePublisher = self.networkRequest.fetchListSignal()
-
-        // map responseStream into AnyCancellable
-        let responseStream = responsePublisher
-            .share() // return as class instance (this is later to cancel on AnyCancellable)
+        self.networkRequest.fetchListSignal()
             .receive(on: DispatchQueue.main) // specify that we want to receive publisher on main thread scheduler (for UI ops)
-            .subscribe(self.responseSubject) // attach to an `responseSubject` subscriber
-
-        // map errorStream into AnyCancellable
-        let errorStream = responsePublisher
-            .catch { [weak self] error -> Publishers.Empty<[Splash], SplashError> in // catch `self.networkRequest.fetchListSignal()` event error
-                self?.errorMessage = error.message
-                return Publishers.Empty()
-            }
-            .retry(1) // retry 1 time if network is failed (typically we don't want to do this, but here's to illustrate Publisher's `retry`)
-            .share() // return this publisher as class instance (this is later to cancel on AnyCancellable)
-            .receive(on: DispatchQueue.main) // specify that we want to receive publisher on main thread scheduler (for UI ops)
-            .subscribe(self.errorSubject) // attach to `errorSubject` subscriber
-
-        // attach `responseSubject` with closure handler, here we process `models` setter
-        _ = self.responseSubject
-            .sink { [weak self] models in self?.models = models }
-
-        // combine both `responseSubject` and `errorSubject` stream
-        _ = Publishers.CombineLatest(responseSubject, errorSubject) { response, error in (response, error) }
-            .map { tuple in tuple.0.isEmpty || tuple.1.isEmpty }
-            .sink { result in self.isLoading = result }
-
-        // collect AnyCancellable subjects to discard later when `SplashViewModel` life cycle ended
-        self.cancellables += [
-            responseStream,
-            errorStream
-        ]
+            .mapError { SplashError.mappedFromRawError($0) } // map error signal
+            .sink(receiveCompletion: { [weak self] (completion) in // completion will be trigger eventually (at the end of signal chain)
+                defer { self?.isLoading = false } // finalize `isLoading` state
+                
+                switch completion {
+                case .failure(let error):
+                    // map error message value to `errorMessage` that will trigger `objectWillChange` signal
+                    self?.errorMessage = error.message
+                case .finished:
+                    break
+                }
+                }, receiveValue: { [weak self] items in
+                    // map response value to `models` that will trigger `objectWillChange` signal
+                    self?.models = items
+            })
+            // `Stores this type-erasing cancellable instance in the specified collection.` that we will
+            // cancel later on `deinit`
+            .store(in: &self.cancellables)
     }
 }

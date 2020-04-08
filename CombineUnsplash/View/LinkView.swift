@@ -12,7 +12,7 @@ import LinkPresentation
 import SwiftUI
 
 struct LinkView: UIViewRepresentable {
-    @Binding var data: LPLinkMetadata
+    var data: LPLinkMetadata
 
     func makeUIView(context: Context) -> LPLinkView {
         LPLinkView(metadata: self.data)
@@ -23,12 +23,12 @@ struct LinkView: UIViewRepresentable {
     }
 }
 
-final class LinkPreviewData: BindableObject {
-    let didChange = PassthroughSubject<LinkPreviewData, Never>()
+final class LinkPreviewData: ObservableObject {
+    let didChange = PassthroughSubject<LPLinkMetadata, Never>()
     var metadata = LPLinkMetadata() {
         didSet {
             DispatchQueue.main.async {
-                self.didChange.send(self)
+                self.didChange.send(self.metadata)
             }
         }
     }
