@@ -11,7 +11,7 @@ import Foundation
 import SwiftUI
 
 struct MainView: View {
-    @ObservedObject var viewModel: SplashViewModel
+    @ObservedObject var viewModel: MainViewViewModel
 
     var body: some View {
         NavigationView {
@@ -25,24 +25,22 @@ struct MainView: View {
                     .multilineTextAlignment(.center)
 
                 // make List if viewModel's error is empty
-                if viewModel.errorMessage.isEmpty {
+                if viewModel.isLoading == false {
                     List(viewModel.models) { model in
                         NavigationLink(
                             destination: DetailView(
-                                preview: LinkPreviewData(),
-                                model: model)
+                                viewModel: DetailViewModel(urlString: model.url),
+                                model: model
+                            )
                         ) {
                             Text(model.author)
                         }
                     }
                 }
-            }
-
-            .navigationBarTitle(
+            }.navigationBarTitle(
                 Text("Unsplash"), displayMode: .large
             )
-        }
-        .onAppear(perform: fetchData) // fetch data when this `MainView` instance appears on scene
+        }.onAppear(perform: fetchData) // fetch data when this `MainView` instance appears on scene
     }
 
     // MARK: - Private
@@ -54,6 +52,6 @@ struct MainView: View {
 
 struct MainView_Previews: PreviewProvider {
     static var previews: some View {
-        MainView(viewModel: SplashViewModel())
+        MainView(viewModel: MainViewViewModel())
     }
 }
